@@ -1,8 +1,9 @@
-import uuid
 import datetime
 import enum
 import typing
 import strawberry
+
+from strawberry import scalars
 
 
 @strawberry.enum
@@ -51,6 +52,11 @@ class User:
     first_name: str
     last_name: str
     password: str
+    avatar: typing.Optional[scalars.Base64] = strawberry.field(
+        description="Base64 encoded avatar",
+        deprecation_reason="Removed this field.",
+        default=None,
+    )
     last_login: typing.Optional[datetime.datetime]
     is_active: bool = strawberry.field(
         default=True,

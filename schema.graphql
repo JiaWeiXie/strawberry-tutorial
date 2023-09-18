@@ -1,0 +1,80 @@
+"""Replace sensitive text with *"""
+directive @sensitive on FIELD
+
+directive @replace(old: String!, new: String!) on FIELD
+
+type AdminUserDetail {
+  systemPermissions: [String!]!
+}
+
+"""
+Represents binary data as Base64-encoded strings, using the standard alphabet.
+"""
+scalar Base64 @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc4648.html#section-4")
+
+"""Date (isoformat)"""
+scalar Date
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+type ManagerUserDetail implements UserProfile {
+  phone: String!
+  birthdate: Date!
+  address: String
+  department: String!
+  subordinates: [User!]!
+}
+
+type NormalUserDetail implements UserProfile {
+  phone: String!
+  birthdate: Date!
+  address: String
+}
+
+type Query {
+  users(role: UserRole = null, roleIn: [UserRole!] = null): [User!]!
+  user(id: Int!): User
+}
+
+type StaffUserDetail implements UserProfile {
+  phone: String!
+  birthdate: Date!
+  address: String
+  department: String!
+}
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+
+  """Base64 encoded avatar"""
+  avatar: Base64 @deprecated(reason: "Removed this field.")
+  lastLogin: DateTime
+
+  """Is the user active?"""
+  isActive: Boolean!
+  role: UserRole!
+  detail: UserDetail!
+  fullName: String!
+}
+
+union UserDetail = NormalUserDetail | StaffUserDetail | ManagerUserDetail | AdminUserDetail
+
+interface UserProfile {
+  phone: String!
+  birthdate: Date!
+  address: String
+}
+
+enum UserRole {
+  """Normal user"""
+  NORMAL
+  STAFF
+  MANAGER
+  ADMIN
+}
