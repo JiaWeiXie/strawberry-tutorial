@@ -76,3 +76,15 @@ class User:
     @strawberry.field
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+@strawberry.input
+class NormalUserInput:
+    username: str
+    email: str
+    first_name: str
+    last_name: str
+    password: str
+    phone: str
+    birthdate: datetime.date
+    address: typing.Optional[str] = None

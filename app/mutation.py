@@ -13,3 +13,6 @@ class Mutation:
         description="Update user",
         extensions=[InputMutationExtension()],
     )   
+    @strawberry.mutation(description="Create new normal user")
+    def new_normal_user(self, input: types.NormalUserInput) -> types.User:
+        return services.user_service.new_normal_user(input)

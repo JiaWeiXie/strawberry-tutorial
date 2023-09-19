@@ -144,6 +144,26 @@ class UserService:
             user.last_name = last_name
             # Save to database
         return user
+    
+    def new_normal_user(self, input: types.NormalUserInput) -> types.User:
+        detail = types.NormalUserDetail(
+            phone= input.phone,
+            birthdate= input.birthdate,
+            address= input.address,
+        )
+        user = types.User(
+            id=fake.random_int(min=1),
+            username=input.username,
+            email=input.email,
+            first_name=input.first_name,
+            last_name=input.last_name,
+            password=fake.lexify(text="?????????????????"), # Hashed password
+            role=types.UserRole.NORMAL,
+            detail=detail,
+            last_login=None
+        )
+        self.normal_users.append(user)
+        return user
 
 
 user_service = UserService()
