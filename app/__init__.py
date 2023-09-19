@@ -4,7 +4,7 @@ import strawberry
 
 from graphql import DirectiveLocation
 
-from app import query
+from app import query, mutation
 
 
 __all__ = ["schema"]
@@ -27,5 +27,6 @@ def replace(value: str, old: str, new: str):
 
 schema = strawberry.Schema(
     query=query.Query,
+    mutation=mutation.Mutation,
     directives=[sensitive_text, replace],
 )

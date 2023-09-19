@@ -129,3 +129,21 @@ class UserService:
             if user.id == id:
                 return user
         return None
+    
+    def update_user(
+        self,
+        id: int,
+        email: str,
+        first_name: str,
+        last_name: str,
+    ) -> typing.Optional[types.User]:
+        user = self.user(id)
+        if user:
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
+            # Save to database
+        return user
+
+
+user_service = UserService()
