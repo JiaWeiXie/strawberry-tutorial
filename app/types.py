@@ -63,15 +63,7 @@ class User:
         description="Is the user active?",
     )
     role: UserRole
-    detail: typing.Annotated[
-        typing.Union[
-            NormalUserDetail,
-            StaffUserDetail,
-            ManagerUserDetail,
-            AdminUserDetail,
-        ],
-        strawberry.union("UserDetail"),
-    ]
+    detail: UserProfile
 
     @strawberry.field
     def full_name(self) -> str:
@@ -88,3 +80,12 @@ class NormalUserInput:
     phone: str
     birthdate: datetime.date
     address: typing.Optional[str] = None
+    
+
+TWDate = strawberry.scalar(
+    datetime.date,
+    serialize=lambda date: date.strftime("%Y年%m月%d日"),
+    parse_value=lambda date: datetime.datetime.strptime(date, "%Y年%m月%d日").date(),
+    description="Taiwan date",
+)
+    
